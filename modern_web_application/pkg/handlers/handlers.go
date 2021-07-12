@@ -1,19 +1,20 @@
-package main
+package handlers
 
 import (
 	"net/http"
+
+	"github.com/mohammadne/go_samples/modern_web_application/pkg/render"
 )
 
-// homeHandler is home handler
-func homeHandler(w http.ResponseWriter, r *http.Request) {
-	renderTmpl(w, "home")
+// Home is home handler
+func Home(w http.ResponseWriter, r *http.Request) {
+	render.RenderTmpl(w, "home")
 	// fmt.Fprintln(w, "welcome to simple home page of my web server")
 }
 
-// operationHandler is about handler
-func operationHandler(w http.ResponseWriter, r *http.Request) {
-	renderTmpl(w, "operation")
-
+// About is about handler
+func About(w http.ResponseWriter, r *http.Request) {
+	render.RenderTmpl(w, "about")
 }
 
 // func addValues(x, y int) int {
