@@ -8,13 +8,13 @@ import (
 
 // Home is home handler
 func Home(w http.ResponseWriter, r *http.Request) {
-	render.RenderTmpl(w, "home")
+	render.RenderTmpl(w, "home.page.tmpl")
 	// fmt.Fprintln(w, "welcome to simple home page of my web server")
 }
 
 // About is about handler
 func About(w http.ResponseWriter, r *http.Request) {
-	render.RenderTmpl(w, "about")
+	render.RenderTmpl(w, "about.page.tmpl")
 }
 
 // func addValues(x, y int) int {

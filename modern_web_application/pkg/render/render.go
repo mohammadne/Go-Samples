@@ -14,7 +14,7 @@ var (
 
 // RenderTmpl renders templates using html/template
 func RenderTmpl(w http.ResponseWriter, name string) {
-	tmplCache, err := createTmplCache()
+	tmplCache, err := CreateTmplCache()
 	if err != nil {
 		log.Fatal("Error create template cache", err)
 	}
@@ -37,8 +37,8 @@ func RenderTmpl(w http.ResponseWriter, name string) {
 
 }
 
-// createTmplCache creates a template cache as a map
-func createTmplCache() (map[string]*template.Template, error) {
+// CreateTmplCache creates a template cache as a map
+func CreateTmplCache() (map[string]*template.Template, error) {
 	cache := map[string]*template.Template{}
 
 	pages, err := filepath.Glob("./templates/*.page.tmpl")
