@@ -6,26 +6,41 @@ import (
 	"net/http"
 	"path/filepath"
 	"text/template"
+
+	"github.com/mohammadne/go_samples/modern_web_application/pkg/config"
+	"github.com/mohammadne/go_samples/modern_web_application/pkg/models"
 )
 
-var (
-	functions = template.FuncMap{}
-)
+var functions = template.FuncMap{}
+
+var app *config.AppConfig
+
+// NewTmpl sets the config foe the template package
+func NewTmpl(a *config.AppConfig) {
+	app = a
+}
+
+func AddDefaultData(tmplData *models.TmplData) *models.TmplData {
+	return tmplData
+}
 
 // RenderTmpl renders templates using html/template
-func RenderTmpl(w http.ResponseWriter, name string) {
-	tmplCache, err := CreateTmplCache()
-	if err != nil {
-		log.Fatal("Error create template cache", err)
+func RenderTmpl(w http.ResponseWriter, name string, tmplData *models.TmplData) {
+	var tmplSet map[string]*template.Template
+	if app.UseCache {
+		tmplSet = app.TemplateCache
+	} else {
+		tmplSet, _ = CreateTmplCache()
 	}
 
-	tmpl, ok := tmplCache[name]
+	tmpl, ok := tmplSet[name]
 	if !ok {
-		log.Fatal("Error not exists in cache", err)
+		log.Fatal("Could not get template from template cache")
 	}
 
 	buf := new(bytes.Buffer)
-	err = tmpl.Execute(buf, nil)
+	tmplData = AddDefaultData(tmplData)
+	err := tmpl.Execute(buf, tmplData)
 	if err != nil {
 		log.Fatal("Error parsing template:", err)
 	}

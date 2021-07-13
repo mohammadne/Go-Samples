@@ -15,16 +15,23 @@ const (
 )
 
 func main() {
+	var appConfig config.AppConfig
+
 	tmplCache, err := render.CreateTmplCache()
 	if err != nil {
 		log.Fatal("Error create template cache", err)
 	}
 
-	var app config.AppConfig
-	app.TemplateCache = tmplCache
+	appConfig.TemplateCache = tmplCache
+	appConfig.UseCache = false
 
-	http.HandleFunc("/", handlers.Home)
-	http.HandleFunc("/about", handlers.About)
+	repo := handlers.NewRepo(&appConfig)
+	handlers.NewHandlers(repo)
+
+	render.NewTmpl(&appConfig)
+
+	http.HandleFunc("/", handlers.Repo.Home)
+	http.HandleFunc("/about", handlers.Repo.About)
 
 	fmt.Printf("starting apllication on port %d\n", portNumber)
 
