@@ -30,12 +30,14 @@ func main() {
 
 	render.NewTmpl(&appConfig)
 
-	http.HandleFunc("/", handlers.Repo.Home)
-	http.HandleFunc("/about", handlers.Repo.About)
-
 	fmt.Printf("starting apllication on port %d\n", portNumber)
 
+	server := &http.Server{
+		Addr:    fmt.Sprintf(":%d", portNumber),
+		Handler: routes(&appConfig),
+	}
+
 	// $ curl localhost:portNumber
-	address := fmt.Sprintf(":%d", portNumber)
-	_ = http.ListenAndServe(address, nil)
+	err = server.ListenAndServe()
+	log.Fatal(err)
 }
